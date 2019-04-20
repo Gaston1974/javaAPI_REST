@@ -418,7 +418,6 @@ public class Query extends HttpServlet {
         List<TbCliente> result;
         List<TbTurno> res;
         List<TbTurno> resdo;
-        opcion = request.getParameter("opcion");
         TbCliente cli = new TbCliente();
         TbTurno tur = new TbTurno();
         Leedor leedor = new Leedor();
@@ -427,7 +426,9 @@ public class Query extends HttpServlet {
         //Map players = new HashMap();
         //List<players> jSONresult;
         
-        fwtr = new FileWriter("/home/gaston/Consultorio/Consultorio/Consultorio/web/WEB-INF/respTest.html");
+        opcion = request.getParameter("teams");
+        
+        fwtr = new FileWriter("/home/gaston/javaAPI_REST/API_REST/web/WEB-INF/respTest.html");
                                 fwtr.write("<!DOCTYPE html>\n<html>\n<head>\n<title>Query</title>\n</head>\n<body>\n<br>\n<table border=\"1\">" +
                                          "<tr>" +
                                          "<td><font size=2 color=\"black\" face=\"helvetica\">nombre</font></td>\n" +
@@ -443,7 +444,7 @@ public class Query extends HttpServlet {
                                                                                     
         //session.beginTransaction();
         
-        if ( opcion == "1" ) {
+        if ( opcion.equals("1") ) {
                         
         HttpResponse<JsonNode> jsonResponse = Unirest.get("https://allsportsapi.com/api/football")
                 .header("accept", "application/json")

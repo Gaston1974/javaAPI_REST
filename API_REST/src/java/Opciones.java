@@ -51,7 +51,7 @@ public class Opciones extends HttpServlet {
             
             case "1":  
                 
-                leedor.leer(out, "/home/gaston/Consultorio/Consultorio/Consultorio/web/WEB-INF/out_sel_eq.html" );
+                leedor.leer(out, "/home/gaston/javaAPI_REST/API_REST/web/WEB-INF/out_sel_eq.html" );
   
                 break;
               

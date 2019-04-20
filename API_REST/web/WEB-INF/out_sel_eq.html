@@ -11,7 +11,7 @@ and open the template in the editor.
 </head>
 <body>
 	<br><br><br><br><br><br><br><br><br><br>
-	<form name="Form" value="select" action="http://localhost:8084/Consultorio/Query" method="get">
+	<form name="Form" value="select" action="http://localhost:8084/API_REST/Query" method="get">
 	<label><p align=center><font size=2 face="helvetica"> <b>Seleccione el equipo.</b></p></label><br><br>
 
 	<table style="margin: 0 auto;" width="200" cellspacing="1" cellpadding="3" border="0" bgcolor="#80A93E">
@@ -27,11 +27,11 @@ and open the template in the editor.
    	<td><font face="verdana, arial, helvetica" size=1> 
 	<div>
     <label for="equipos">EQUIPO :</label><br><br>
-        <select id="equipo" class="autocomplete">
-    	   <option name="opcion" value="1">Option one</option>
-    	   <option name="opcion" value="2">Option two</option>
-           <option name="opcion" value="3">Option three</option>
-  		</select>
+        <select name="teams">
+    	   <option value="1">Option one</option>
+    	   <option value="2">Option two</option>
+           <option value="3">Option three</option>
+  	</select>   
        </div>	
 	</font></td> 	
 	</tr>
