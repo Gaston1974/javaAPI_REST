@@ -56,6 +56,9 @@ Contributor(s):
     <mapping class="entidades.TbKinesiologo"/>
     <mapping class="entidades.TbLocalidad"/>
     <mapping class="entidades.TbProvincia"/>
+    <mapping class="entidades.Fequipo"/>
+    <mapping class="entidades.Fpais"/>
+    <mapping resource="entidades/hibernate.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>
 <!--

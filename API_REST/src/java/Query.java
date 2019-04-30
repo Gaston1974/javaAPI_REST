@@ -210,22 +210,7 @@ public class Query extends HttpServlet {
         
         opcion = request.getParameter("teams");
         fwtr1 = new FileWriter(rutaArchivo);
-         
-        
-        fwtr1.write("<!DOCTYPE html>\n<html>\n<head>\n<title>Query</title>\n</head>\n<body>\n<br>\n<table border=\"1\">" +
-                                         "\n<tr>" +
-                                         "<td><font size=2 color=\"black\" face=\"helvetica\">playerKey</font></td>\n" +
-                                         "<td><font size=2 color=\"black\" face=\"helvetica\">playerName</font></td>\n" +
-                                         "<td><font size=2 color=\"black\" face=\"helvetica\">playerNumber</font></td>\n" +
-                                         "<td><font size=2 color=\"black\" face=\"helvetica\">playerCountry</font></td>\n" +
-                                         "<td><font size=2 color=\"black\" face=\"helvetica\">playerType</font></td>\n" +
-                                         "<td><font size=2 color=\"black\" face=\"helvetica\">playerAge</font></td>\n" +
-                                         "<td><font size=2 color=\"black\" face=\"helvetica\">playerMatchPlayed</font></td>\n" +
-                                         "<td><font size=2 color=\"black\" face=\"helvetica\">playerGoals</font></td>\n" +
-                                         "<td><font size=2 color=\"black\" face=\"helvetica\">playerYellowCards</font></td>\n" +
-                                         "<td><font size=2 color=\"black\" face=\"helvetica\">playerRedCards</font></td>\n" +
-                                         "</tr>" );
-     
+              
         //Session session = HibernateUtil.getSessionFactory().getCurrentSession();      
                                                                                     
         //session.beginTransaction();
@@ -238,9 +223,35 @@ public class Query extends HttpServlet {
                 // param = busco id ( API FUTBOL ) del equipo en la base
                 String param = "2616";
                 String key = "&APIkey=3181aba25e0ededb5fa60883bd351da54315e3395abfbee8ab8cf6f768c63751";
+                String urlImagen = "https://allsportsapi.com/logo/2615_bournemouth.png";
                 
                 sendGet(param, key);
-                
+              
+                         }
+        
+            // urlImagen = busco id ( API FUTBOL ) del equipo en la base         
+            String urlImagen = "https://allsportsapi.com/logo/2615_bournemouth.png";
+            
+            fwtr1.write("<!DOCTYPE html>\n<html>\n<head>\n<title>Query</title>\n</head>\n<style> \n" +
+                                         "body {  background-image: url(" + urlImagen + "); \n" +
+                                         "background-color: green;\n" +
+                                         "background-repeat: no-repeat; \n" +
+                                         "background-position:center center; }\n" +
+                                         "</style> \n<br>\n<table border=\"1\">" +
+                                         "\n<tr>" +
+                                         "<td><font size=2 color=\"yellow\" face=\"helvetica\">playerKey</font></td>\n" +
+                                         "<td><font size=2 color=\"yellow\" face=\"helvetica\">playerName</font></td>\n" +
+                                         "<td><font size=2 color=\"yellow\" face=\"helvetica\">playerNumber</font></td>\n" +
+                                         "<td><font size=2 color=\"yellow\" face=\"helvetica\">playerCountry</font></td>\n" +
+                                         "<td><font size=2 color=\"yellow\" face=\"helvetica\">playerType</font></td>\n" +
+                                         "<td><font size=2 color=\"yellow\" face=\"helvetica\">playerAge</font></td>\n" +
+                                         "<td><font size=2 color=\"yellow\" face=\"helvetica\">playerMatchPlayed</font></td>\n" +
+                                         "<td><font size=2 color=\"yellow\" face=\"helvetica\">playerGoals</font></td>\n" +
+                                         "<td><font size=2 color=\"yellow\" face=\"helvetica\">playerYellowCards</font></td>\n" +
+                                         "<td><font size=2 color=\"yellow\" face=\"helvetica\">playerRedCards</font></td>\n" +
+                                         "</tr>" );
+        
+
                 // parseo JSON
                 
                 Object obj; 
@@ -276,9 +287,9 @@ public class Query extends HttpServlet {
                                               } 
                                          } 
                 fwtr1.write("\n</table>\n</body>\n</html>");
-                fwtr1.close();
-            }        
-		
+                fwtr1.close();    
+		leedor.leer(out, "/home/gaston/javaAPI_REST/API_REST/web/WEB-INF/jugadores.html" );
+                
         }   catch (Exception ex) {
                 Logger.getLogger(Query.class.getName()).log(Level.SEVERE, null, ex);
             }

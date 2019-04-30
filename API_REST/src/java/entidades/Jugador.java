@@ -55,16 +55,16 @@ public class Jugador {
         return 
                                
                 "\n<tr>" +
-                 "<td><font size=2 color=\"black\" face=\"helvetica\">" + playerKey + "</font></td>\n" +
-                 "<td><font size=2 color=\"black\" face=\"helvetica\">" + playerName + "</font></td>\n" +
-                 "<td><font size=2 color=\"black\" face=\"helvetica\">" + playerNumber + "</font></td>\n" +
-                 "<td><font size=2 color=\"black\" face=\"helvetica\">" + playerCountry + "</font></td>\n" +
-                 "<td><font size=2 color=\"black\" face=\"helvetica\">" + playerType + "</font></td>\n" +
-                 "<td><font size=2 color=\"black\" face=\"helvetica\">" + playerAge + "</font></td>\n" +
-                 "<td><font size=2 color=\"black\" face=\"helvetica\">" + playerMatchPlayed + "</font></td>\n" +
-                 "<td><font size=2 color=\"black\" face=\"helvetica\">" + playerGoals + "</font></td>\n" +
-                 "<td><font size=2 color=\"black\" face=\"helvetica\">" + playerYellowCards + "</font></td>\n" +
-                 "<td><font size=2 color=\"black\" face=\"helvetica\">" + playerRedCards + "</font></td>\n" +
+                 "<td><font size=2 color=\"white\" face=\"helvetica\">" + playerKey + "</font></td>\n" +
+                 "<td><font size=2 color=\"white\" face=\"helvetica\">" + playerName + "</font></td>\n" +
+                 "<td><font size=2 color=\"white\" face=\"helvetica\">" + playerNumber + "</font></td>\n" +
+                 "<td><font size=2 color=\"white\" face=\"helvetica\">" + playerCountry + "</font></td>\n" +
+                 "<td><font size=2 color=\"white\" face=\"helvetica\">" + playerType + "</font></td>\n" +
+                 "<td><font size=2 color=\"white\" face=\"helvetica\">" + playerAge + "</font></td>\n" +
+                 "<td><font size=2 color=\"white\" face=\"helvetica\">" + playerMatchPlayed + "</font></td>\n" +
+                 "<td><font size=2 color=\"white\" face=\"helvetica\">" + playerGoals + "</font></td>\n" +
+                 "<td><font size=2 color=\"white\" face=\"helvetica\">" + playerYellowCards + "</font></td>\n" +
+                 "<td><font size=2 color=\"white\" face=\"helvetica\">" + playerRedCards + "</font></td>\n" +
                 "</tr>" ;
     }
     
