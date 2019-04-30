@@ -3,20 +3,24 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
+/*
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.ObjectMapper;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+*/
 import hibernate.HibernateUtil;
 import entidades.TbCliente;
 import entidades.TbEspecialidad;
 import entidades.TbKinesiologo;
 import entidades.TbTurno;
 import entidades.TbUsuario;
+import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.FileReader; 
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import varios.Leedor;
 import varios.ImpresorHTML;
@@ -37,9 +41,26 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import jdk.nashorn.internal.parser.JSONParser;
-import org.json.*  ;
+//import jdk.nashorn.internal.parser.JSONParser;
+import org.apache.http.HttpResponse;
+//import org.json.*  ;
+import org.json.simple.parser.*;
 import org.hibernate.Session; 
+import org.apache.http.client.*;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.commons.logging.*;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.json.simple.JSONObject;
+import entidades.Jugador;
+import java.io.File;
+import java.util.Set;
+import org.json.simple.JSONArray;
+
+
 //import org.eclipse.persistence.jpa.jpql.parser.DateTime;
 //import org.hibernate.Criteria;
 //import org.hibernate.SQLQuery;
@@ -51,7 +72,9 @@ import org.hibernate.Session;
  */
 @WebServlet(urlPatterns = {"/Query"})
 public class Query extends HttpServlet {
-
+    
+    
+        private final String USER_AGENT = "Mozilla/5.0";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -70,18 +93,7 @@ public class Query extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             // declaracion de variables
     /*        
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-M-dd hh:mm:ss");
-        String opcion = "0";
-        List<TbCliente> result;
-        List<TbTurno> res;
-        List<TbTurno> resdo;
-        String dni = request.getParameter("documento");
-        String nombre = request.getParameter("nombre");
-        String apellido = request.getParameter("apellido");
-        TbCliente cli = new TbCliente();
-        TbTurno tur = new TbTurno();
-        Leedor leedor = new Leedor();
-        ImpresorHTML impresor = new ImpresorHTML();
+
             
            // tomo datos del formulario web
             
@@ -110,234 +122,7 @@ public class Query extends HttpServlet {
         
         switch (opcion)  {
             
-            case "1":  // Consultar cliente       
-                    FileWriter fw = null;
-                    result = new ArrayList<TbCliente>();
-                    int flag = 0;
-                                        
-                    if ( !dni.equals("") ) {
-        
-                        result = session.getNamedQuery("clientes").setString(0, dni).list();
-                          flag = 1;   }    
-                    else if ( !apellido.equals("") ) {
-                                  result =  session.getNamedQuery("cli.apellido").setString(0, apellido).list();
-                                    flag = 1;  }
-                         else if ( !nombre.equals("") ) {
-                                    result =  session.getNamedQuery("cli.nombre").setString(0, nombre).list();
-                                    flag = 1; }               
-                              else
-                                    {
-                                        
-                                     impresor.imprimir(out, "red", "no se han completado los campos.", "Querys");   
-                               
-                                          }          
-                    if ( flag == 1 )
-                        if ( result.size() != 0)  {
-                          try {
-                                fw = new FileWriter("/home/gaston/Consultorio/Consultorio/Consultorio/web/WEB-INF/results.html");
-                                fw.write("<!DOCTYPE html>\n<html>\n<head>\n<title>Query</title>\n</head>\n<body>\n<br>\n<table border=\"1\">" +
-                                         "<tr>" +
-                                         "<td><font size=2 color=\"black\" face=\"helvetica\">id cliente</font></td>\n" +
-                                         "<td><font size=2 color=\"black\" face=\"helvetica\">nombre</font></td>\n" +
-                                         "<td><font size=2 color=\"black\" face=\"helvetica\">apellido</font></td>\n" +
-                                         "<td><font size=2 color=\"black\" face=\"helvetica\">idlocalidad</font></td>\n" +
-                                         "<td><font size=2 color=\"black\" face=\"helvetica\">telefono</font></td>\n" +
-                                         "<td><font size=2 color=\"black\" face=\"helvetica\">tipodni</font></td>\n" +
-                                         "<td><font size=2 color=\"black\" face=\"helvetica\">nrodni</font></td>\n" +
-                                         "</tr>" );
-                                      
-                        for ( TbCliente object: result ) {
-                                      fw.write( "\n" + object.toString() ) ;                                        
-                                  }
-                            fw.write("\n</table>\n</body>\n</html>");
-                        }  catch(Exception e){
-                              e.printStackTrace();
-                            }finally{
-            
-                            try{
-                                if ( null != fw ){
-                                fw.close();
-                            }
-                                }catch ( Exception e2){
-                                e2.printStackTrace();
-                                }
-            
-                            } 
-                        
-                        leedor.leer(out, "/home/gaston/Consultorio/Consultorio/Consultorio/web/WEB-INF/results.html" );
-  
-                    } else 
-                            impresor.imprimir(out, "red", "no se han encontrado resultados.", "Querys");
-                        
-              break;
-              
-            case "2":  // Insertar Cliente
-
-                String localidad = request.getParameter("localidad");
-                String provincia = request.getParameter("provincia");
-                String telefono = request.getParameter("telefono");
-                Long    idCliIn;
-                Long    idCliOut = Long.parseLong("0");
-                                                       
-
-                    if ( !dni.equals("") && !nombre.equals("") && !apellido.equals("") && 
-                            !localidad.equals("") && !provincia.equals("") && !telefono.equals("") ) 
-                    {
-                        idCliOut = Long.parseLong("-1");
-                        idCliIn = (Long) session.createQuery("SELECT max(t.idcliente) FROM TbCliente t").uniqueResult();
-                        idCliIn += 1;
-                        cli.setIdcliente(idCliIn);
-                        cli.setNombre(nombre);
-                        cli.setApellido(apellido);
-                        cli.setIdlocalidad(localidad);
-                        cli.setTelefono(telefono);
-                        cli.setTipodni("DNI");
-                        cli.setNrodni(dni);
-                        idCliOut = (Long) session.save(cli);
-                    }                     
-                    else
-                         {               
-                             impresor.imprimir(out, "red", "no se han completado los campos.", "Querys");
-                                
-                          }          
-            if ( idCliOut != 0 && idCliOut != -1 )
-                    {
-                        impresor.imprimir(out, "blue", "El cliente ha sido insertado correctamente.", "Querys");
-                        
-                    }
-            else if ( idCliOut == Long.parseLong("-1")) {
-             
-                        impresor.imprimir(out, "red", "Ocurrio un erro al insertar, vuelva a intentar.", "Querys");
-            }    
-              
-             break;
-             
-            case "3": // Asignar turno
-                
-                Long  idTurOut = Long.parseLong("0");
-                
-             try { 
-                String fec =  request.getParameter("fecha");
-                Date fecha =  (Date) (df.parse(fec));
-                //Timestamp fecha = new Timestamp (fec.getTime());                
-                TbEspecialidad id_especialidad = new TbEspecialidad (Integer.parseInt(request.getParameter("id_especialidad")));
-                TbKinesiologo id_matricula = new TbKinesiologo (Integer.parseInt(request.getParameter("id_matricula")));
-                TbUsuario id_usuario = new TbUsuario (Integer.parseInt(request.getParameter("id_usuario")));
-                TbCliente idCli = new TbCliente (Long.parseLong(request.getParameter("id_cliente")));    
-               
-                        tur.setIdcliente(idCli);
-                        tur.setfecha(fecha);
-                        tur.setIdespecialidad(id_especialidad);
-                        tur.setIdmatricula(id_matricula);
-                        tur.setIdusuario(id_usuario);
-                        session.save(tur);
-                        
-                   }catch(Exception e){
-          
-                idTurOut = Long.parseLong("1");                           
-              
-                impresor.imprimir(out, "red", "Error al insertar, vuelva a intentar.", "Querys");
-            
-            } 
-            
-             if ( idTurOut != 1 )
-                    {
-                impresor.imprimir(out, "blue", "El cliente ha sido insertado correctamente.", "Querys");
-                        
-                    }   
-            
-            
-            break;
-            
-             case "4": // Eliminar cliente
-                  try {   
-                      String clnte =  request.getParameter("id_cliente"); 
-                      TbCliente cliente ;
-                      String hqlDeleteT = "delete TbTurno c where c.idcliente = ?";
-                      String hqlDeleteC = "delete TbCliente c where c.idcliente = ?";
-                      int flg = 0; 
-                      int deletedEntitiesT = 0;
-                      int deletedEntitiesC = 0;
-                      
-                      if ( !clnte.equals("") ) {
-                          Long id = (Long.parseLong(clnte));
-                          TbCliente idCli = new TbCliente(id); 
-                          deletedEntitiesT = session.createQuery( hqlDeleteT ).setLong(0, idCli.getIdcliente()).executeUpdate();
-                          deletedEntitiesC = session.createQuery( hqlDeleteC ).setLong(0, idCli.getIdcliente()).executeUpdate();
-                          //session.delete(idCli); 
-                          flg = 1;}
-                      else if (!dni.equals("")) {
-                            cliente =  (TbCliente) session.getNamedQuery("getdocument").setString(0, dni).uniqueResult();
-                            deletedEntitiesT = session.createQuery( hqlDeleteT ).setLong(0, cliente.getIdcliente()).executeUpdate();
-                            session.delete(cliente);
-                            flg = 1;}
-                   
-                if ( flg == 1 ) {
-                    
-                        impresor.imprimir(out, "blue", "El cliente ha sido eliminado correctamente.", "Querys");   
-                    
-                          }           
-                    }catch(Exception e){
-              
-                        impresor.imprimir(out, "red", "Error al eliminar, vuelva a intentar.", "Querys");
-                   }
-            break;
-            
-            
-            case "5": // Consultar turno x cliente
-                
-                    FileWriter fwr = null;
-                    res = new ArrayList<TbTurno>();
-                    String cte =  request.getParameter("id_cliente"); 
-                    int fg = 0;
-                                        
-                    if ( !cte.equals("") ) {
-                        Long idCte = Long.parseLong(cte);
-                        res = session.getNamedQuery("turnosCliente").setLong(0, idCte).list();
-                          fg = 1;   }                 
-                    else
-                                    
-                               impresor.imprimir(out, "red", "no se han completado los campos.", "Querys");
-                                                    
-                    if ( fg == 1 && res.size() != 0 )  {
-                        try {
-                                fwr = new FileWriter("/home/gaston/Consultorio/Consultorio/Consultorio/web/WEB-INF/results_2.html");
-                                fwr.write("<!DOCTYPE html>\n<html>\n<head>\n<title>Query</title>\n</head>\n<body>\n<br>\n<table border=\"1\">" +
-                                         "<tr>" +
-                                         "<td><font size=2 color=\"black\" face=\"helvetica\">id cliente</font></td>\n" +
-                                         "<td><font size=2 color=\"black\" face=\"helvetica\">idespecialidad</font></td>\n" +
-                                         "<td><font size=2 color=\"black\" face=\"helvetica\">idmatricula</font></td>\n" +
-                                         "<td><font size=2 color=\"black\" face=\"helvetica\">idusuario</font></td>\n" +
-                                         "<td><font size=2 color=\"black\" face=\"helvetica\">fecha</font></td>\n" +
-                                         "</tr>" );
-                                      
-                        for ( TbTurno object: res ) {
-                                      fwr.write( "\n" + object.toString() ) ;                                        
-                                  }
-                            fwr.write("\n</table>\n</body>\n</html>");
-                        }  catch(Exception e){
-                              e.printStackTrace();
-                            }finally{
-            
-                            try{
-                                if ( null != fwr ){
-                                fwr.close();
-                            }
-                                }catch ( Exception e2){
-                                e2.printStackTrace();
-                                }
-            
-                            } 
-                        
-                        leedor.leer(out, "/home/gaston/Consultorio/Consultorio/Consultorio/web/WEB-INF/results_2.html" );
-           
-                    } else                                   
-                           
-                        impresor.imprimir(out, "red", "Error al consultar, vuelva a intentar.", "Querys");
-                 break;
-            
-            
-            case "6": // Consultar turno x kinesiologo
+        case "6": // Consultar turno x kinesiologo
                 
                     FileWriter fwtr = null;
                     resdo = new ArrayList<TbTurno>();
@@ -415,38 +200,191 @@ public class Query extends HttpServlet {
             
         SimpleDateFormat df = new SimpleDateFormat("yyyy-M-dd hh:mm:ss");
         String opcion = "0";
-        List<TbCliente> result;
-        List<TbTurno> res;
-        List<TbTurno> resdo;
-        TbCliente cli = new TbCliente();
         TbTurno tur = new TbTurno();
         Leedor leedor = new Leedor();
         ImpresorHTML impresor = new ImpresorHTML();
-        FileWriter fwtr = null;  
-        //Map players = new HashMap();
-        //List<players> jSONresult;
+        List<String> valores = null ;
+        int i = 0;
+        FileWriter fwtr1 = null;
+        String rutaArchivo = "/home/gaston/javaAPI_REST/API_REST/web/WEB-INF/jugadores.html" ;
         
         opcion = request.getParameter("teams");
+        fwtr1 = new FileWriter(rutaArchivo);
+         
         
-        fwtr = new FileWriter("/home/gaston/javaAPI_REST/API_REST/web/WEB-INF/respTest.html");
-                                fwtr.write("<!DOCTYPE html>\n<html>\n<head>\n<title>Query</title>\n</head>\n<body>\n<br>\n<table border=\"1\">" +
-                                         "<tr>" +
-                                         "<td><font size=2 color=\"black\" face=\"helvetica\">nombre</font></td>\n" +
-                                         "<td><font size=2 color=\"black\" face=\"helvetica\">numero</font></td>\n" +
-                                         "<td><font size=2 color=\"black\" face=\"helvetica\">nacionalidad</font></td>\n" +
-                                         "<td><font size=2 color=\"black\" face=\"helvetica\">edad</font></td>\n" +
-                                         "<td><font size=2 color=\"black\" face=\"helvetica\">goles</font></td>\n" +
-                                         "<td><font size=2 color=\"black\" face=\"helvetica\">amonestaciones</font></td>\n" +
-                                         "<td><font size=2 color=\"black\" face=\"helvetica\">expulsiones</font></td>\n" +
+        fwtr1.write("<!DOCTYPE html>\n<html>\n<head>\n<title>Query</title>\n</head>\n<body>\n<br>\n<table border=\"1\">" +
+                                         "\n<tr>" +
+                                         "<td><font size=2 color=\"black\" face=\"helvetica\">playerKey</font></td>\n" +
+                                         "<td><font size=2 color=\"black\" face=\"helvetica\">playerName</font></td>\n" +
+                                         "<td><font size=2 color=\"black\" face=\"helvetica\">playerNumber</font></td>\n" +
+                                         "<td><font size=2 color=\"black\" face=\"helvetica\">playerCountry</font></td>\n" +
+                                         "<td><font size=2 color=\"black\" face=\"helvetica\">playerType</font></td>\n" +
+                                         "<td><font size=2 color=\"black\" face=\"helvetica\">playerAge</font></td>\n" +
+                                         "<td><font size=2 color=\"black\" face=\"helvetica\">playerMatchPlayed</font></td>\n" +
+                                         "<td><font size=2 color=\"black\" face=\"helvetica\">playerGoals</font></td>\n" +
+                                         "<td><font size=2 color=\"black\" face=\"helvetica\">playerYellowCards</font></td>\n" +
+                                         "<td><font size=2 color=\"black\" face=\"helvetica\">playerRedCards</font></td>\n" +
                                          "</tr>" );
-                                
+     
         //Session session = HibernateUtil.getSessionFactory().getCurrentSession();      
                                                                                     
         //session.beginTransaction();
         
-        if ( opcion.equals("1") ) {
-                        
-        HttpResponse<JsonNode> jsonResponse = Unirest.get("https://allsportsapi.com/api/football")
+        switch ( opcion ) {
+            case "1":
+
+                System.out.println("Testing 1 - Send Http GET request");
+                   
+                // param = busco id ( API FUTBOL ) del equipo en la base
+                String param = "2616";
+                String key = "&APIkey=3181aba25e0ededb5fa60883bd351da54315e3395abfbee8ab8cf6f768c63751";
+                
+                sendGet(param, key);
+                
+                // parseo JSON
+                
+                Object obj; 
+                obj = new JSONParser().parse(new FileReader("/home/gaston/javaAPI_REST/API_REST/web/WEB-INF/file.json"));
+                JSONObject jo = (JSONObject) obj;
+                
+                Iterator<Map.Entry> itr1 ;
+                Iterator<Map.Entry>  itr3 ;
+
+                
+                JSONArray ja = (JSONArray) jo.get("result"); 
+                Iterator itr2 = ja.iterator(); 
+                
+                while (itr2.hasNext())  { 
+                itr1 = ((Map) itr2.next()).entrySet().iterator(); 
+                       while (itr1.hasNext()) { 
+                       Map.Entry element = (Map.Entry) itr1.next();
+                       if (element.getKey().equals("players"))   {                          //PARSEO jugadores
+                                        JSONArray value = (JSONArray) element.getValue();
+                                        Iterator itr4 = value.iterator();
+                                                while (itr4.hasNext())  { 
+                                                itr3 = ((Map) itr4.next()).entrySet().iterator();
+                                                valores = new ArrayList();
+                                                    while (itr3.hasNext())  { 
+                                                    Map.Entry pair = itr3.next(); 
+                                                    valores.add((String) pair.getValue().toString()) ;
+                                                    i++;
+                                                                            } 
+                                                Jugador ju = new Jugador(valores);   
+                                                ju.escribirHtml(fwtr1);
+                                                                        } 
+                                                                 }
+                                              } 
+                                         } 
+                fwtr1.write("\n</table>\n</body>\n</html>");
+                fwtr1.close();
+            }        
+		
+        }   catch (Exception ex) {
+                Logger.getLogger(Query.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        //session.getTransaction().commit();    
+
+    }
+    
+    	// HTTP GET request
+	private void sendGet(String p, String k) throws Exception {
+
+		String url = "https://allsportsapi.com/api/football/?&met=Teams&teamId=";
+                FileWriter fwtr2 = new FileWriter("/home/gaston/javaAPI_REST/API_REST/web/WEB-INF/file.json");
+                            
+             
+                String urlParam = url + p ;
+                String urlComp = urlParam + k ;
+                String line2="";
+                
+		HttpClient client = new DefaultHttpClient();
+		HttpGet request = new HttpGet(urlComp);
+
+		// add request header
+		request.addHeader("User-Agent", USER_AGENT);
+                request.addHeader("Accept","application/json");
+                
+                       
+		HttpResponse response = client.execute(request);
+
+		System.out.println("\nSending 'GET' request to URL : " + urlComp);
+		System.out.println("Response Code : " + 
+                       response.getStatusLine().getStatusCode());
+           
+
+		BufferedReader rd = new BufferedReader(
+                       new InputStreamReader(response.getEntity().getContent()));
+
+		StringBuffer result = new StringBuffer();
+		String line = "";
+		while ((line = rd.readLine()) != null) {
+			 line2 =result.append(line).toString();
+                         fwtr2.write(line2);
+		}
+
+                fwtr2.close();
+	
+	}
+}
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    /*
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+   response.setContentType("text/html;charset=UTF-8");
+    */
+    /*
+            try 
+            (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            // declaracion de variables     */
+     /*       
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-M-dd hh:mm:ss");
+        String opcion = "0";
+        List<TbCliente> result;
+        TbCliente cli = new TbCliente();
+        TbTurno tur = new TbTurno();
+        Leedor leedor = new Leedor();
+        ImpresorHTML impresor = new ImpresorHTML();
+        //FileWriter fwtr = null; 
+  
+     */   
+        //Map players = new HashMap();
+        //List<players> jSONresult;
+        
+     //   opcion = request.getParameter("teams");
+        
+                                
+        //Session session = HibernateUtil.getSessionFactory().getCurrentSession();      
+                                                                                    
+        //session.beginTransaction();
+    /*    
+        switch ( opcion ) {
+            case "1":
+
+                System.out.println("Testing 1 - Send Http GET request");
+                   
+                // param = busco id ( API FUTBOL ) del equipo en la base
+                String param = "2616";
+                String key = "&APIkey=3181aba25e0ededb5fa60883bd351da54315e3395abfbee8ab8cf6f768c63751";
+                
+                sendGet(param, key);
+            }        
+		
+        }   catch (Exception ex) {
+                Logger.getLogger(Query.class.getName()).log(Level.SEVERE, null, ex);
+            }
+    */        
+    /*                    
+          HttpResponse<JsonNode> jsonResponse = Unirest.get("https://allsportsapi.com/api/football")
                 .header("accept", "application/json")
                 .queryString("APIkey", "3181aba25e0ededb5fa60883bd351da54315e3395abfbee8ab8cf6f768c63751")
                 .queryString("met", "team")
@@ -478,34 +416,74 @@ public class Query extends HttpServlet {
         } catch (JSONException ex) {
             Logger.getLogger(Query.class.getName()).log(Level.SEVERE, null, ex);
         }
-}
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    /*
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (ParseException ex) {
-            Logger.getLogger(Query.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+            
+            
+    }  */
+     /*
+    	// HTTP GET request
+	private void sendGet(String p, String k) throws Exception {
+
+		String url = "https://allsportsapi.com/api/football/?&met=Teams&teamId=";
+                FileWriter fwtr2 = new FileWriter("/home/gaston/javaAPI_REST/API_REST/web/WEB-INF/respTest2.txt");
+                //List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();    
+                
+                //BasicHttpParams bh = new BasicHttpParams();
+                String urlParam = url + p ;
+                String urlComp = urlParam + k ;
+                String line2="";
+                
+		HttpClient client = new DefaultHttpClient();
+		HttpGet request = new HttpGet(urlComp);
+
+		// add request header
+		request.addHeader("User-Agent", USER_AGENT);
+                request.addHeader("Accept","application/json");
+                
+                //request.setParams(bh.setParameters(, "teams"));
+                
+                //urlParameters.add(new BasicNameValuePair("APIkey", "3181aba25e0ededb5fa60883bd351da54315e3395abfbee8ab8cf6f768c63751"));
+                //urlParameters.add(new BasicNameValuePair("met", "team"));
+                //urlParameters.add(new BasicNameValuePair("teamId", "2616"));
+                
+                //request.setEntity(new UrlEncodedFormEntity(urlParameters));
+                
+		HttpResponse response = client.execute(request);
+
+		System.out.println("\nSending 'GET' request to URL : " + urlComp);
+		System.out.println("Response Code : " + 
+                       response.getStatusLine().getStatusCode());
+           
+
+		BufferedReader rd = new BufferedReader(
+                       new InputStreamReader(response.getEntity().getContent()));
+
+		StringBuffer result = new StringBuffer();
+		String line = "";
+		while ((line = rd.readLine()) != null) {
+			 line2 =result.append(line).toString();
+                         fwtr2.write(line2);
+		}
+
+                fwtr2.close();
+		//System.out.println(line2);   */
+   // }
 
     /**
      * Returns a short description of the servlet.
      *
      * @return a String containing servlet description
      */
+/*
     @Override
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
 
+    private static class JsonProcessingException {
+
+        public JsonProcessingException() {
+        }
+    }
+
 }
+*/
