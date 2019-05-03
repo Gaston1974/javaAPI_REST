@@ -6,7 +6,8 @@
             <file>file:/home/gaston/javaAPI_REST/API_REST/web/index.html</file>
             <file>file:/home/gaston/javaAPI_REST/API_REST/src/java/Opciones.java</file>
             <file>file:/home/gaston/javaAPI_REST/API_REST/src/java/Query.java</file>
-            <file>file:/home/gaston/javaAPI_REST/API_REST/web/WEB-INF/out_sel_eq.html</file>
+            <file>file:/home/gaston/javaAPI_REST/API_REST/src/java/entidades/Fpais.java</file>
+            <file>file:/home/gaston/javaAPI_REST/API_REST/src/java/entidades/Fequipo.java</file>
         </group>
     </open-files>
 </project-private>

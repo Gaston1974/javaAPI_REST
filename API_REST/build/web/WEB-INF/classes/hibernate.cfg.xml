@@ -58,7 +58,8 @@ Contributor(s):
     <mapping class="entidades.TbProvincia"/>
     <mapping class="entidades.Fequipo"/>
     <mapping class="entidades.Fpais"/>
-    <mapping resource="entidades/hibernate.hbm.xml"/>
+  <!--<mapping resource="entidades/hibernate.hbm.xml"/>-->
+    <!--<mapping resource="default package/hibernate.cfg.xml"/>-->
   </session-factory>
 </hibernate-configuration>
 <!--

@@ -23,8 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "Fpais")
 @XmlRootElement
 @NamedQueries({
-      @NamedQuery(name = "equipoId", query = "SELECT t FROM Fpais t WHERE t.nrodni = ?")
-    , @NamedQuery(name = "equipoStatus", query = "SELECT t FROM Fpais t WHERE t.idcliente = :idcliente")})
+      @NamedQuery(name = "paisId", query = "SELECT t FROM Fpais t ")})
 
 public class Fpais implements Serializable {
 

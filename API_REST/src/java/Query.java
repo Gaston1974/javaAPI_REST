@@ -11,11 +11,7 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 */
 import hibernate.HibernateUtil;
-import entidades.TbCliente;
-import entidades.TbEspecialidad;
-import entidades.TbKinesiologo;
-import entidades.TbTurno;
-import entidades.TbUsuario;
+import entidades.Fequipo;
 import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.FileReader; 
@@ -200,7 +196,7 @@ public class Query extends HttpServlet {
             
         SimpleDateFormat df = new SimpleDateFormat("yyyy-M-dd hh:mm:ss");
         String opcion = "0";
-        TbTurno tur = new TbTurno();
+        Fequipo eq = new Fequipo();
         Leedor leedor = new Leedor();
         ImpresorHTML impresor = new ImpresorHTML();
         List<String> valores = null ;
@@ -211,16 +207,18 @@ public class Query extends HttpServlet {
         opcion = request.getParameter("teams");
         fwtr1 = new FileWriter(rutaArchivo);
               
-        //Session session = HibernateUtil.getSessionFactory().getCurrentSession();      
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();      
                                                                                     
-        //session.beginTransaction();
+        session.beginTransaction();
         
         switch ( opcion ) {
-            case "1":
+            case "2":
 
                 System.out.println("Testing 1 - Send Http GET request");
                    
                 // param = busco id ( API FUTBOL ) del equipo en la base
+                int opc = Integer.parseInt(opcion);
+                eq = (Fequipo) session.getNamedQuery("Select_equipoId").setInteger(0, opc).uniqueResult();
                 String param = "2616";
                 String key = "&APIkey=3181aba25e0ededb5fa60883bd351da54315e3395abfbee8ab8cf6f768c63751";
                 String urlImagen = "https://allsportsapi.com/logo/2615_bournemouth.png";
@@ -228,6 +226,8 @@ public class Query extends HttpServlet {
                 sendGet(param, key);
               
                          }
+        
+        session.getTransaction().commit();    
         
             // urlImagen = busco id ( API FUTBOL ) del equipo en la base         
             String urlImagen = "https://allsportsapi.com/logo/2615_bournemouth.png";
@@ -293,9 +293,7 @@ public class Query extends HttpServlet {
         }   catch (Exception ex) {
                 Logger.getLogger(Query.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
-        //session.getTransaction().commit();    
-
+                    
     }
     
     	// HTTP GET request

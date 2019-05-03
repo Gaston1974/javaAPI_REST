@@ -23,8 +23,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "f_equipo")
 @XmlRootElement
 @NamedQueries({
-      @NamedQuery(name = "equipoId", query = "SELECT t FROM f_equipo t WHERE t.nrodni = ?")
-    , @NamedQuery(name = "equipoStatus", query = "SELECT t FROM f_equipo t WHERE t.idcliente = :idcliente")})
+        @NamedQuery(name = "Select_equipoId", query = "SELECT t FROM Fequipo t WHERE t.equipoId = ?")
+    , @NamedQuery(name = "Select_Status", query = "SELECT t FROM Fequipo t")})
 
 public class Fequipo implements Serializable {
 
@@ -36,6 +36,9 @@ public class Fequipo implements Serializable {
     //@GeneratedValue(strategy= GenerationType.TABLE)
     //@GeneratedValue(strategy=GenerationType.AUTO)
     private Long pais_id;
+    @Basic(optional = true)
+    @Column(name = "equipo_id")
+    private Long equipoId;
     @Basic(optional = false)
     @Column(name = "equipo")
     private String equipo;
@@ -44,7 +47,7 @@ public class Fequipo implements Serializable {
     private String logo_url;
     @Basic(optional = true)
     @Column(name = "api_id")
-    private String api_id;
+    private Long api_id;
     @Basic(optional = true)
     @Column(name = "status")
     private String status;
@@ -53,5 +56,35 @@ public class Fequipo implements Serializable {
 public Fequipo () {
     
 }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public Long getPais_id() {
+        return pais_id;
+    }
+
+    public String getEquipo() {
+        return equipo;
+    }
+
+    public String getLogo_url() {
+        return logo_url;
+    }
+
+    public Long getApi_id() {
+        return api_id;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public Long getEquipoId() {
+        return equipoId;
+    }
+
+
 
 }
