@@ -17,7 +17,7 @@ import varios.Leedor;
  *
  * @author root
  */
-public class Opciones extends HttpServlet {
+public class Abm extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -45,27 +45,34 @@ public class Opciones extends HttpServlet {
                 opcion = "2";
         else if ( request.getParameter("operacion").equals("c") )
                 opcion = "3";
+        else                
+                opcion = "4";
        
         
         switch (opcion)  {      
             
             case "1":  
                 
-                leedor.leer(out, "/home/gaston/javaAPI_REST/API_REST/web/WEB-INF/out_sel_eq_Ing.html" );
+                leedor.leer(out, "/home/gaston/javaAPI_REST/API_REST/web/WEB-INF/inicio.html" );            // CONSULTA
   
                 break;
               
             case "2":  
                
-                leedor.leer(out, "/home/gaston/javaAPI_REST/API_REST/web/WEB-INF/testDelete.html" );
+                leedor.leer(out, "/home/gaston/javaAPI_REST/API_REST/web/WEB-INF/alta.html" );              // ALTA
     
                 break;
              
             case "3": 
                 
-                leedor.leer(out, "/home/gaston/javaAPI_REST/API_REST/web/WEB-INF/out_sel_eq_Ale.html" );
-
+                leedor.leer(out, "/home/gaston/javaAPI_REST/API_REST/web/WEB-INF/*************.html" );     // BAJA
+                
                 break;
+            
+            case "4": 
+                
+                leedor.leer(out, "/home/gaston/javaAPI_REST/API_REST/web/WEB-INF/***************.html" );   // MODIFICACION
+    
               
         }
      }      

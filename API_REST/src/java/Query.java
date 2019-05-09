@@ -25,11 +25,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.LinkedHashMap; 
 import java.util.Map; 
 import java.util.Iterator;
 import javax.servlet.ServletException;
@@ -37,24 +35,16 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-//import jdk.nashorn.internal.parser.JSONParser;
 import org.apache.http.HttpResponse;
-//import org.json.*  ;
 import org.json.simple.parser.*;
 import org.hibernate.Session; 
 import org.apache.http.client.*;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.commons.logging.*;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.params.BasicHttpParams;
 import org.json.simple.JSONObject;
 import entidades.Jugador;
-import java.io.File;
-import java.util.Set;
 import org.json.simple.JSONArray;
+//import javax.servlet.*;
 
 
 //import org.eclipse.persistence.jpa.jpql.parser.DateTime;
@@ -211,26 +201,23 @@ public class Query extends HttpServlet {
                                                                                     
         session.beginTransaction();
         
-        switch ( opcion ) {
-            case "2":
 
                 System.out.println("Testing 1 - Send Http GET request");
                    
                 // param = busco id ( API FUTBOL ) del equipo en la base
                 int opc = Integer.parseInt(opcion);
                 eq = (Fequipo) session.getNamedQuery("Select_equipoId").setInteger(0, opc).uniqueResult();
-                String param = "2616";
+                String param = eq.getApi_id().toString();   
                 String key = "&APIkey=3181aba25e0ededb5fa60883bd351da54315e3395abfbee8ab8cf6f768c63751";
-                String urlImagen = "https://allsportsapi.com/logo/2615_bournemouth.png";
+                
                 
                 sendGet(param, key);
               
-                         }
-        
+                             
         session.getTransaction().commit();    
         
             // urlImagen = busco id ( API FUTBOL ) del equipo en la base         
-            String urlImagen = "https://allsportsapi.com/logo/2615_bournemouth.png";
+            String urlImagen = eq.getLogo_url();
             
             fwtr1.write("<!DOCTYPE html>\n<html>\n<head>\n<title>Query</title>\n</head>\n<style> \n" +
                                          "body {  background-image: url(" + urlImagen + "); \n" +
@@ -335,7 +322,28 @@ public class Query extends HttpServlet {
                 fwtr2.close();
 	
 	}
+        
+            @Override
+    protected void doPut(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+   response.setContentType("text/html;charset=UTF-8");
+   
+   
+   
+   
+   
 }
+
+        
+}
+
+/*
+ @Override
+ protected void doPost (HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+          response.setContentType("text/html;charset=UTF-8");
+}*/
+
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -344,12 +352,14 @@ public class Query extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    /*
+   /*
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
    response.setContentType("text/html;charset=UTF-8");
-    */
+}
+
+   
     /*
             try 
             (PrintWriter out = response.getWriter()) {

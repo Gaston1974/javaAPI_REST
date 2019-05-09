@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
         @NamedQuery(name = "Select_equipoId", query = "SELECT t FROM Fequipo t WHERE t.equipoId = ?")
-    , @NamedQuery(name = "Select_Status", query = "SELECT t FROM Fequipo t")})
+    , @NamedQuery(name = "Select_Max", query = "SELECT MAX(equipo_id) FROM Fequipo")})
 
 public class Fequipo implements Serializable {
 
