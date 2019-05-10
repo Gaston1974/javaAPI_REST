@@ -30,6 +30,10 @@
         <load-on-startup>1</load-on-startup> -->
     </servlet>
     <servlet>
+        <servlet-name>Abm</servlet-name>
+        <servlet-class>Abm</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>Query3</servlet-name>
         <servlet-class>Query3</servlet-class>
     </servlet>
@@ -52,6 +56,10 @@
      <servlet-mapping>
         <servlet-name>Query3</servlet-name>
         <url-pattern>/Query3</url-pattern>
+    </servlet-mapping> 
+    <servlet-mapping>
+        <servlet-name>Abm</servlet-name>
+        <url-pattern>/Abm</url-pattern>
     </servlet-mapping>  
     <session-config>
         <session-timeout>

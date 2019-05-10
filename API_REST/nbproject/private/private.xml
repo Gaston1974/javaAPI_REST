@@ -3,13 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/gaston/javaAPI_REST/API_REST/web/index.html</file>
             <file>file:/home/gaston/javaAPI_REST/API_REST/src/java/Query2.java</file>
             <file>file:/home/gaston/javaAPI_REST/API_REST/src/java/Opciones.java</file>
             <file>file:/home/gaston/javaAPI_REST/API_REST/src/java/Query.java</file>
-            <file>file:/home/gaston/javaAPI_REST/API_REST/web/WEB-INF/testDoPut.html</file>
-            <file>file:/home/gaston/javaAPI_REST/API_REST/web/WEB-INF/web.xml</file>
-            <file>file:/home/gaston/javaAPI_REST/API_REST/web/WEB-INF/testDoPost.html</file>
+            <file>file:/home/gaston/javaAPI_REST/API_REST/web/WEB-INF/alta.html</file>
+            <file>file:/home/gaston/javaAPI_REST/API_REST/src/java/Abm.java</file>
         </group>
     </open-files>
 </project-private>
