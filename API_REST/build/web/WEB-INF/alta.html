@@ -13,7 +13,7 @@ and open the template in the editor.   src="https://code.jquery.com/jquery-1.10.
     <body>
         <br><br><br><br><br><br><br><br><br><br>
         <form id="user-form">
-            <table>
+            <table align=center>
                 <tr>
                     <td> Id del pais: </td>
                     <td><input type="text" name="pais"/></td>
@@ -44,9 +44,11 @@ and open the template in the editor.   src="https://code.jquery.com/jquery-1.10.
                 $.ajax({
                     type: 'POST',
                     url: url,
+                    datatype: "text",
                     contentType: 'application/json',
                     data: JSON.stringify({pais: idPais, equipo: equipo, equipo_id: equipoId }),
-  /*                  success: function (data, status, xhr) {
+                      
+/*                      success: function (data, status, xhr) {
                         window.location.replace("http://localhost:8084/API_REST/Query2");
                     },
                     error: function (xhr, status, error) {

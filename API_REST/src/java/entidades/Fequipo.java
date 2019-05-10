@@ -35,10 +35,10 @@ public class Fequipo implements Serializable {
     //@SequenceGenerator(name="seq-gen",sequenceName="MY_SEQ_GEN",initialValue=2, allocationSize=12)
     //@GeneratedValue(strategy= GenerationType.TABLE)
     //@GeneratedValue(strategy=GenerationType.AUTO)
-    private Long pais_id;
+    private int pais_id;
     @Basic(optional = true)
     @Column(name = "equipo_id")
-    private Long equipoId;
+    private int equipoId;
     @Basic(optional = false)
     @Column(name = "equipo")
     private String equipo;
@@ -47,7 +47,7 @@ public class Fequipo implements Serializable {
     private String logo_url;
     @Basic(optional = true)
     @Column(name = "api_id")
-    private Long api_id;
+    private String api_id;
     @Basic(optional = true)
     @Column(name = "status")
     private String status;
@@ -57,11 +57,18 @@ public Fequipo () {
     
 }
 
+    public Fequipo(int pais_id, int equipoId, String equipo, String api_id) {
+        this.pais_id = pais_id;
+        this.equipoId = equipoId;
+        this.equipo = equipo;
+        this.api_id = api_id;
+    }
+
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }
 
-    public Long getPais_id() {
+    public int getPais_id() {
         return pais_id;
     }
 
@@ -73,7 +80,7 @@ public Fequipo () {
         return logo_url;
     }
 
-    public Long getApi_id() {
+    public String getApi_id() {
         return api_id;
     }
 
@@ -81,8 +88,32 @@ public Fequipo () {
         return status;
     }
 
-    public Long getEquipoId() {
+    public int getEquipoId() {
         return equipoId;
+    }
+
+    public void setPais_id(int pais_id) {
+        this.pais_id = pais_id;
+    }
+
+    public void setEquipoId(int equipoId) {
+        this.equipoId = equipoId;
+    }
+
+    public void setEquipo(String equipo) {
+        this.equipo = equipo;
+    }
+
+    public void setLogo_url(String logo_url) {
+        this.logo_url = logo_url;
+    }
+
+    public void setApi_id(String api_id) {
+        this.api_id = api_id;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
 
