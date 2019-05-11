@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <servlet>
-        <servlet-name>Login</servlet-name>
-        <servlet-class>Login</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>Opciones</servlet-name>
         <servlet-class>Opciones</servlet-class>
     </servlet>
@@ -15,19 +11,6 @@
     <servlet>
         <servlet-name>Query2</servlet-name>
         <servlet-class>Query2</servlet-class>
-             <!--       <init-param>
-                        <param-name>debug</param-name>
-                        <param-value>0</param-value>
-                    </init-param>
-                    <init-param>
-                        <param-name>listings</param-name>
-                        <param-value>false</param-value>
-                    </init-param>
-                    <init-param>
-                        <param-name>readonly</param-name>
-                        <param-value>false</param-value>
-                    </init-param>
-        <load-on-startup>1</load-on-startup> -->
     </servlet>
     <servlet>
         <servlet-name>Abm</servlet-name>
@@ -37,10 +20,10 @@
         <servlet-name>Query3</servlet-name>
         <servlet-class>Query3</servlet-class>
     </servlet>
-    <servlet-mapping>
-        <servlet-name>Login</servlet-name>
-        <url-pattern>/Login</url-pattern>
-    </servlet-mapping>
+    <servlet>
+        <servlet-name>Query4</servlet-name>
+        <servlet-class>Query4</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Opciones</servlet-name>
         <url-pattern>/Opciones</url-pattern>
@@ -56,7 +39,11 @@
      <servlet-mapping>
         <servlet-name>Query3</servlet-name>
         <url-pattern>/Query3</url-pattern>
-    </servlet-mapping> 
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Query4</servlet-name>
+        <url-pattern>/Query4</url-pattern>
+    </servlet-mapping>  
     <servlet-mapping>
         <servlet-name>Abm</servlet-name>
         <url-pattern>/Abm</url-pattern>

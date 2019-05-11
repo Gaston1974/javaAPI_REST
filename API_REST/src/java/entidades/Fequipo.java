@@ -23,22 +23,22 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "f_equipo")
 @XmlRootElement
 @NamedQueries({
-        @NamedQuery(name = "Select_equipoId", query = "SELECT t FROM Fequipo t WHERE t.equipoId = ?")})
-    //, @NamedQuery(name = "Select_Max", query = "SELECT MAX(equipo_id) FROM Fequipo")})
+        @NamedQuery(name = "Select_equipoId", query = "SELECT t FROM Fequipo t WHERE t.equipoId = ?")
+    ,   @NamedQuery(name = "Delete", query = "DELETE FROM Fequipo t WHERE t.equipo = ?")})
 
 public class Fequipo implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id 
     @Basic(optional = false)
-    @Column(name = "pais_id")
+    @Column(name = "equipo_id")
     //@SequenceGenerator(name="seq-gen",sequenceName="MY_SEQ_GEN",initialValue=2, allocationSize=12)
     //@GeneratedValue(strategy= GenerationType.TABLE)
     //@GeneratedValue(strategy=GenerationType.AUTO)
-    private int pais_id;
-    @Basic(optional = true)
-    @Column(name = "equipo_id")
     private int equipoId;
+    @Basic(optional = true)
+    @Column(name = "pais_id")         
+    private int pais_id;
     @Basic(optional = false)
     @Column(name = "equipo")
     private String equipo;

@@ -47,10 +47,6 @@ import org.json.simple.JSONArray;
 //import javax.servlet.*;
 
 
-//import org.eclipse.persistence.jpa.jpql.parser.DateTime;
-//import org.hibernate.Criteria;
-//import org.hibernate.SQLQuery;
-//import org.hibernate.criterion.Restrictions;
 
 /**
  *
@@ -61,109 +57,7 @@ public class Query extends HttpServlet {
     
     
         private final String USER_AGENT = "Mozilla/5.0";
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    /*
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, ParseException {
-        response.setContentType("text/html;charset=UTF-8");
-        try 
-            (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            // declaracion de variables
-    /*        
 
-            
-           // tomo datos del formulario web
-            
-        if ( request.getParameter("request").equals("Consultar_cliente") ) 
-                opcion = "1";
-        else if ( request.getParameter("request").equals("Insertar") ) 
-                opcion = "2";
-        else if ( request.getParameter("request").equals("Asignar") ) 
-                opcion = "3";
-        else if ( request.getParameter("request").equals("Eliminar") ) 
-                opcion = "4";
-        else if ( request.getParameter("request").equals("Consultar_turno") )
-                opcion = "5";
-        else
-                opcion = "6";
-        
-        
-           // Inicio session Hibernate
-            
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();      
-                                                                                    
-        session.beginTransaction(); 
-            
-        
-           // cases
-        
-        switch (opcion)  {
-            
-        case "6": // Consultar turno x kinesiologo
-                
-                    FileWriter fwtr = null;
-                    resdo = new ArrayList<TbTurno>();
-                    String klogo =  request.getParameter("idmatricula"); 
-                    int fag = 0;
-                                        
-                    if ( !klogo.equals("") ) {
-                        Integer idKlogo = Integer.parseInt(klogo);
-                        resdo = session.getNamedQuery("turnosKinesiologo").setInteger(0, idKlogo).list();
-                          fag = 1;   }                 
-                    else                                 
-                               impresor.imprimir(out, "red", "no se han completado los campos.", "Querys");
-                                                    
-                    if ( fag == 1 ) 
-                            if ( resdo.size() != 0 )  {
-                        try {
-                                fwtr = new FileWriter("/home/gaston/Consultorio/Consultorio/Consultorio/web/WEB-INF/results_2.html");
-                                fwtr.write("<!DOCTYPE html>\n<html>\n<head>\n<title>Query</title>\n</head>\n<body>\n<br>\n<table border=\"1\">" +
-                                         "<tr>" +
-                                         "<td><font size=2 color=\"black\" face=\"helvetica\">id cliente</font></td>\n" +
-                                         "<td><font size=2 color=\"black\" face=\"helvetica\">idespecialidad</font></td>\n" +
-                                         "<td><font size=2 color=\"black\" face=\"helvetica\">idmatricula</font></td>\n" +
-                                         "<td><font size=2 color=\"black\" face=\"helvetica\">idusuario</font></td>\n" +
-                                         "<td><font size=2 color=\"black\" face=\"helvetica\">fecha</font></td>\n" +
-                                         "</tr>" );
-                                      
-                        for ( TbTurno object: resdo ) {
-                                      fwtr.write( "\n" + object.toString() ) ;                                        
-                                  }
-                            fwtr.write("\n</table>\n</body>\n</html>");
-                        }  catch(Exception e){
-                              e.printStackTrace();
-                            }finally{
-            
-                            try{
-                                if ( null != fwtr ){
-                                fwtr.close();
-                            }
-                                }catch ( Exception e2){
-                                e2.printStackTrace();
-                                }
-            
-                            } 
-                        
-                        leedor.leer(out, "/home/gaston/Consultorio/Consultorio/Consultorio/web/WEB-INF/results_2.html" );
-           
-                    } else                                   
-                           
-                        impresor.imprimir(out, "red", "Error al consultar, vuelva a intentar.", "Querys");                           
-        }
-      
-         session.getTransaction().commit();
-    } 
-}        
-*/
     
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

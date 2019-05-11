@@ -4,16 +4,26 @@
  * and open the template in the editor.
  */
 
+
 import entidades.Fequipo;
 import hibernate.HibernateUtil;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.hibernate.Session;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import varios.ImpresorHTML;
 
 /**
  *
@@ -41,42 +51,95 @@ public class Query3 extends HttpServlet {
             // declaracion de variables
             
         String opcion = "0";
+        String result ;
+        int aux = 0;
         String metodo = "";
-        Fequipo eq = new Fequipo();
+        String body = "";
+        String equipo = "";
+        ImpresorHTML impresor = new ImpresorHTML();
+      
   //      opcion = request.getParameter("teams");
-      opcion = request.getParameter("name");
+        opcion = request.getParameter("name");
     //  metodo = request.getParameter("_metodo");
               
-    
+        body = getBody(request);
+        
+        Object obj; 
+                        try {
+                            obj = new JSONParser().parse(body);
+                            JSONObject jo = (JSONObject) obj;
+                            
+                            equipo = (String) jo.get("equipo");
+                                                                                                 
+                            } catch (ParseException ex) {
+                            Logger.getLogger(Query2.class.getName()).log(Level.SEVERE, null, ex);
+                                                        }
       
+          try {
+              
+                         
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();      
                                                                                     
         session.beginTransaction();
-        
-   
+           
                 System.out.println("Testing 1 - Send Http DELETE request");
                    
-                // param = busco id ( API FUTBOL ) del equipo en la base
-                int opc = Integer.parseInt(opcion);
-                eq = (Fequipo) session.getNamedQuery("Select_equipoId").setInteger(0, opc).uniqueResult();
-           
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet NewServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Equipo: " + eq.getEquipo() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+                aux =  (int) session.createQuery("SELECT equipoId FROM Fequipo t WHERE t.equipo = ?").setString(0, equipo).uniqueResult();
                 
+                if ( aux != 0  )          {    
+                    
+                    Fequipo eq = (Fequipo) session.get(Fequipo.class, aux);
+                    session.delete(eq);
+                                          }
+                else
+                    impresor.imprimir(out, "red", "No existe el equipo", "Eliminar");     
+                   
         session.getTransaction().commit();  
-                
-             
         
+               } catch (Exception ex) {
+              Logger.getLogger(Query2.class.getName()).log(Level.SEVERE, null, ex);
+              
+                                                        }          
+        impresor.imprimir(out, "blue", "El equipo fue eliminado", "API rest");
+      
         }
  
     }
         
+        // Implementacion metodo para leer body del POST request
+    
+    public static String getBody(HttpServletRequest request) throws IOException {
+
+    String body = null;
+    StringBuilder stringBuilder = new StringBuilder();
+    BufferedReader bufferedReader = null;
+
+    try {
+        InputStream inputStream = request.getInputStream();
+        if (inputStream != null) {
+            bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+            char[] charBuffer = new char[128];
+            int bytesRead = -1;
+            while ((bytesRead = bufferedReader.read(charBuffer)) > 0) {
+                stringBuilder.append(charBuffer, 0, bytesRead);
+            }
+        } else {
+            stringBuilder.append("");
+        }
+    } catch (IOException ex) {
+        throw ex;
+    } finally {
+        if (bufferedReader != null) {
+            try {
+                bufferedReader.close();
+            } catch (IOException ex) {
+                throw ex;
+            }
+        }
+    }
+
+    body = stringBuilder.toString();
+    return body;
+}
+    
 }

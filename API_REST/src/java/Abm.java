@@ -65,13 +65,13 @@ public class Abm extends HttpServlet {
              
             case "3": 
                 
-                leedor.leer(out, "/home/gaston/javaAPI_REST/API_REST/web/WEB-INF/*************.html" );     // BAJA
+                leedor.leer(out, "/home/gaston/javaAPI_REST/API_REST/web/WEB-INF/baja.html" );              // BAJA
                 
                 break;
             
             case "4": 
                 
-                leedor.leer(out, "/home/gaston/javaAPI_REST/API_REST/web/WEB-INF/***************.html" );   // MODIFICACION
+                leedor.leer(out, "/home/gaston/javaAPI_REST/API_REST/web/WEB-INF/update.html" );            // MODIFICACION
     
               
         }

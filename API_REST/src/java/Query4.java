@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 
+
 import entidades.Fequipo;
 import hibernate.HibernateUtil;
 import java.io.BufferedReader;
@@ -24,18 +25,16 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import varios.ImpresorHTML;
 
-
 /**
  *
  * @author gaston
  */
-@WebServlet(urlPatterns = {"/Query2"})
-public class Query2 extends HttpServlet {
+@WebServlet(urlPatterns = {"/Query4"})
+public class Query4 extends HttpServlet {
 
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
-     * Handles the HTTP <code>POST</code> method.
+     * Handles the HTTP <code>DELETE</code> method.
      *
      * @param request servlet request
      * @param response servlet response
@@ -45,22 +44,24 @@ public class Query2 extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-      
-        
-                    try 
+ 
+        try 
             (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             // declaracion de variables
-        System.out.println("Send Http POST request");   
-            // declaracion de variables
-        int max = 0;   
+            
+        String opcion = "0";
+        int aux = 0;
+        String metodo = "";
         String body = "";
-        String paisId = "" ;
         String equipo = "";
-        String equipoId = "";
+        String apiId = "";
         ImpresorHTML impresor = new ImpresorHTML();
-        
-    
+      
+  //      opcion = request.getParameter("teams");
+        opcion = request.getParameter("name");
+    //  metodo = request.getParameter("_metodo");
+              
         body = getBody(request);
         
         Object obj; 
@@ -68,42 +69,48 @@ public class Query2 extends HttpServlet {
                             obj = new JSONParser().parse(body);
                             JSONObject jo = (JSONObject) obj;
                             
-                            paisId = (String) jo.get("pais");
                             equipo = (String) jo.get("equipo");
-                            equipoId = (String) jo.get("equipo_id");
-                                                                                 
+                            apiId = (String) jo.get("sport");
+                                                                                                 
                             } catch (ParseException ex) {
                             Logger.getLogger(Query2.class.getName()).log(Level.SEVERE, null, ex);
                                                         }
-        try {
       
+          try {
+              
+                         
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();      
                                                                                     
-        session.beginTransaction();                     
-                               
-                max =  (int) session.createQuery("SELECT MAX(equipoId) FROM Fequipo").uniqueResult();
-                max++;
+        session.beginTransaction();
+           
+                System.out.println("Testing 1 - Send Http POST request");
+                   
+                aux =  (int) session.createQuery("SELECT equipo_id FROM Fequipo t WHERE t.equipo like ?").setString(0, equipo).uniqueResult();
                 
-                Fequipo eq = new Fequipo(Integer.parseInt(paisId), max, equipo, equipoId);
                 
-                             
-                session.save(eq);
-                  
+                if ( aux != 0 ) {
+                    
+                    Fequipo eq = (Fequipo) session.get(Fequipo.class, aux);
+                    eq.setApi_id(apiId);
+                    session.flush(); 
+                    
+                                }
+                else
+                    impresor.imprimir(out, "red", "No existe el equipo", "Eliminar");     
+                    
+        session.getTransaction().commit();  
         
-                session.getTransaction().commit();  
-        
-            } catch (Exception ex) {
+               } catch (Exception ex) {
               Logger.getLogger(Query2.class.getName()).log(Level.SEVERE, null, ex);
               
-                                                        }        
-        impresor.imprimir(out, "blue", "El equipo fue dado de alta", "API rest");
-                
+                                                        }          
+        impresor.imprimir(out, "blue", "El equipo fue actualizadp", "API rest");
+      
         }
-        
+ 
     }
-
-    
-    // Implementacion metodo para leer body del POST request
+        
+        // Implementacion metodo para leer body del POST request
     
     public static String getBody(HttpServletRequest request) throws IOException {
 
@@ -138,6 +145,5 @@ public class Query2 extends HttpServlet {
     body = stringBuilder.toString();
     return body;
 }
-    
     
 }
