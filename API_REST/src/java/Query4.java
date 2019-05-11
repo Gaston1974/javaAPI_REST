@@ -11,6 +11,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,7 +35,7 @@ public class Query4 extends HttpServlet {
 
      // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
-     * Handles the HTTP <code>DELETE</code> method.
+     * Handles the HTTP <code>POST</code> method.
      *
      * @param request servlet request
      * @param response servlet response
@@ -46,21 +47,17 @@ public class Query4 extends HttpServlet {
             throws ServletException, IOException {
  
         try 
+          //   (OutputStream output = response.getOutputStream()) {
             (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             // declaracion de variables
             
-        String opcion = "0";
         int aux = 0;
-        String metodo = "";
         String body = "";
         String equipo = "";
         String apiId = "";
         ImpresorHTML impresor = new ImpresorHTML();
       
-  //      opcion = request.getParameter("teams");
-        opcion = request.getParameter("name");
-    //  metodo = request.getParameter("_metodo");
               
         body = getBody(request);
         
@@ -85,7 +82,7 @@ public class Query4 extends HttpServlet {
            
                 System.out.println("Testing 1 - Send Http POST request");
                    
-                aux =  (int) session.createQuery("SELECT equipo_id FROM Fequipo t WHERE t.equipo like ?").setString(0, equipo).uniqueResult();
+                aux =  (int) session.createQuery("SELECT equipoId FROM Fequipo t WHERE t.equipo = ?").setString(0, equipo).uniqueResult();
                 
                 
                 if ( aux != 0 ) {
@@ -96,7 +93,7 @@ public class Query4 extends HttpServlet {
                     
                                 }
                 else
-                    impresor.imprimir(out, "red", "No existe el equipo", "Eliminar");     
+                   impresor.imprimir(out, "red", "No existe el equipo", "Eliminar");     
                     
         session.getTransaction().commit();  
         
@@ -104,8 +101,8 @@ public class Query4 extends HttpServlet {
               Logger.getLogger(Query2.class.getName()).log(Level.SEVERE, null, ex);
               
                                                         }          
-        impresor.imprimir(out, "blue", "El equipo fue actualizadp", "API rest");
-      
+        impresor.imprimir(out, "green", "El equipo fue actualizado", "API rest");
+
         }
  
     }

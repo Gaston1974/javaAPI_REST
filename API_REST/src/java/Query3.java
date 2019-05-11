@@ -50,17 +50,10 @@ public class Query3 extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             // declaracion de variables
             
-        String opcion = "0";
-        String result ;
         int aux = 0;
-        String metodo = "";
         String body = "";
         String equipo = "";
         ImpresorHTML impresor = new ImpresorHTML();
-      
-  //      opcion = request.getParameter("teams");
-        opcion = request.getParameter("name");
-    //  metodo = request.getParameter("_metodo");
               
         body = getBody(request);
         
@@ -73,11 +66,9 @@ public class Query3 extends HttpServlet {
                                                                                                  
                             } catch (ParseException ex) {
                             Logger.getLogger(Query2.class.getName()).log(Level.SEVERE, null, ex);
-                                                        }
-      
+                                                        }     
           try {
-              
-                         
+                                     
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();      
                                                                                     
         session.beginTransaction();
@@ -100,12 +91,15 @@ public class Query3 extends HttpServlet {
               Logger.getLogger(Query2.class.getName()).log(Level.SEVERE, null, ex);
               
                                                         }          
-        impresor.imprimir(out, "blue", "El equipo fue eliminado", "API rest");
+        impresor.imprimir(out, "green", "El equipo fue eliminado", "API rest");
       
         }
  
     }
         
+    
+    
+    
         // Implementacion metodo para leer body del POST request
     
     public static String getBody(HttpServletRequest request) throws IOException {

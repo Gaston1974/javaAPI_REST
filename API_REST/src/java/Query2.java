@@ -84,19 +84,18 @@ public class Query2 extends HttpServlet {
                 max =  (int) session.createQuery("SELECT MAX(equipoId) FROM Fequipo").uniqueResult();
                 max++;
                 
-                Fequipo eq = new Fequipo(Integer.parseInt(paisId), max, equipo, equipoId);
-                
+                Fequipo eq = new Fequipo(Integer.parseInt(paisId), max, equipo, equipoId);          
                              
                 session.save(eq);
                   
         
-                session.getTransaction().commit();  
+        session.getTransaction().commit();  
         
             } catch (Exception ex) {
               Logger.getLogger(Query2.class.getName()).log(Level.SEVERE, null, ex);
               
                                                         }        
-        impresor.imprimir(out, "blue", "El equipo fue dado de alta", "API rest");
+        impresor.imprimir(out, "green", "El equipo fue dado de alta", "API rest");
                 
         }
         

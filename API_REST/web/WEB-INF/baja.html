@@ -37,7 +37,10 @@ and open the template in the editor.   src="https://code.jquery.com/jquery-1.10.
                     datatype: "text",
                     contentType: 'application/json',
                     data: JSON.stringify({equipo: equipo }),
-                      
+                    success: function(response){
+                        //if request if made successfully then the response represent the data
+                        $( "#msg" ).empty().append( response );
+                      }  
 /*                      success: function (data, status, xhr) {
                         window.location.replace("http://localhost:8084/API_REST/Query2");
                     },

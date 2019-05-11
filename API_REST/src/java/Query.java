@@ -200,7 +200,7 @@ public class Query extends HttpServlet {
 
 		System.out.println("\nSending 'GET' request to URL : " + urlComp);
 		System.out.println("Response Code : " + 
-                       response.getStatusLine().getStatusCode());
+                       response.getStatusLine().getStatusCode());                       // MANEJO DE ERROR
            
 
 		BufferedReader rd = new BufferedReader(
