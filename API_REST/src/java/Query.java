@@ -146,6 +146,9 @@ public class Query extends HttpServlet {
                 JSONArray ja = (JSONArray) jo.get("result"); 
                 Iterator itr2 = ja.iterator(); 
                 
+                // if ( !itr2.hasNext() ) 
+                //  Error Manager 
+                // else {
                 while (itr2.hasNext())  { 
                 itr1 = ((Map) itr2.next()).entrySet().iterator(); 
                        while (itr1.hasNext()) { 
@@ -200,7 +203,7 @@ public class Query extends HttpServlet {
 
 		System.out.println("\nSending 'GET' request to URL : " + urlComp);
 		System.out.println("Response Code : " + 
-                       response.getStatusLine().getStatusCode());                       // MANEJO DE ERROR
+                       response.getStatusLine().getStatusCode());                       // MANEJO DE ERROR: le doy el codigo http y result de la consulta
            
 
 		BufferedReader rd = new BufferedReader(

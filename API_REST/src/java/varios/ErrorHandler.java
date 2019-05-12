@@ -11,4 +11,16 @@ package varios;
  */
 public class ErrorHandler {
     
+    
+    public void EnviarMsg(int codigo, int status) {
+        
+        
+        
+        
+        
+        
+    }
+    
+    
+    
 }
